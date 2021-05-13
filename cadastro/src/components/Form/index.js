@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useHistory, useParams } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 import api from "../../service/api";
 
@@ -47,10 +48,12 @@ function Forms() {
   function adicionarCadastro(xCadastro) {
     if (id){
       api.put(`/api/cadastro/${id}`, xCadastro).then(() => {
+        toast.success('Cadastro alterado com sucesso!')
         history.push("/");
       });
     }else {
       api.post("/api/cadastro", xCadastro).then(() => {
+        toast.success('Cadastro salvo com sucesso!')
         history.push("/");
       });
     }

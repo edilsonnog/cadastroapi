@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Table, Button } from "react-bootstrap";
+import { toast } from 'react-toastify';
 import {
   Container,
   Pagination,
@@ -43,7 +44,14 @@ function Tables() {
   }, []);
 
   function excluirCadastro(id) {
-    api.delete(`/api/cadastro/${id}`);
+    api.delete(`/api/cadastro/${id}`).then(()=> {
+      refreshPage();
+      toast.warning('Cadastro Removido com sucesso!')
+    });
+
+    function refreshPage(){ 
+      window.location.reload(); 
+  }
   }
 
   return (
@@ -101,7 +109,6 @@ function Tables() {
                     onClick={(e) => {
                       excluirCadastro(cadastro.id);
                     }}
-                    href={"/"}
                     variant="outline-danger"
                   >
                     Deletar
