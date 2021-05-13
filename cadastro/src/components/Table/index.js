@@ -46,12 +46,12 @@ function Tables() {
   function excluirCadastro(id) {
     api.delete(`/api/cadastro/${id}`).then(()=> {
       refreshPage();
-      toast.warning('Cadastro Removido com sucesso!')
     });
-
-    function refreshPage(){ 
-      window.location.reload(); 
   }
+
+  function refreshPage(){ 
+    toast.warning('Cadastro Removido com sucesso!');
+    window.location.reload(); 
   }
 
   return (
@@ -59,14 +59,7 @@ function Tables() {
       <h3>Tabela de Cadastro</h3>
       <div className="dropdown-divider"></div>
       <div className="top">
-        <div>
-          <select className="custom-select" onChange={limits}>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="100">100</option>
-          </select>
-        </div>
+        <div></div>
         <div>
           <Button variant="primary" href="/cadastrar">
             Novo Cadastro
