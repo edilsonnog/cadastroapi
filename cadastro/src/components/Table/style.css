@@ -1,0 +1,32 @@
+.pagination {
+    justify-content: space-between;
+}
+
+.container{
+    font-family: 'Poppins';
+    margin: 3% 10% 8% 12%;
+    background-color: #ffffff;
+    padding: 2rem 1rem 2rem 1rem;
+    box-shadow: 0 0 5px 5px rgba(0,0,0, .10);
+    width: 75%;
+    border-radius: 10px;
+}
+
+.btItem{
+    display: flex;
+}
+.item {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.top {
+    justify-content: space-between;
+    display: flex;
+}
+
+.topBt {
+    padding: 0 10px;
+    cursor: pointer;
+    margin-left: 10px;
+}

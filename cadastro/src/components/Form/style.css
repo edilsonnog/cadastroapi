@@ -1,0 +1,17 @@
+.container{
+    font-family: 'Poppins';
+    margin: 3% 10% 8% 12%;
+    background-color: #ffffff;
+    padding: 2rem 1rem 2rem 1rem;
+    box-shadow: 0 0 5px 5px rgba(0,0,0, .10);
+    width: 75%;
+    border-radius: 10px;
+}
+
+.btButton {
+    padding: 0px 10px;
+}
+
+.btn {
+    margin-left: 10px;
+}
