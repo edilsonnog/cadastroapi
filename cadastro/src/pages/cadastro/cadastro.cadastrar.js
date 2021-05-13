@@ -1,7 +1,7 @@
 import React from "react";
 
 import Headers from "../../components/Header";
-import Forms from "../../components/FormAlt";
+import Forms from "../../components/Form";
 
 export default function CadastroCadastrar() {
   return (

@@ -1,105 +1,141 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Form, Button } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
 
 import api from "../../service/api";
 
 import "./style.css";
 
 function Forms() {
-  
   const history = useHistory();
+  const { id } = useParams();
+
   const [cadastro, setCadastro] = useState({});
 
-  function handleChange(e) {
-    setCadastro({
-      ...cadastro,
-      [e.target.name]: e.target.value,
-    });
+  useEffect(() => {
+    if (id) {
+      async function loadCadastro() {
+        const response = await api.get(`/api/cadastro/${id}`);
+        setCadastro(response.data);
+        console.log(response.data)
+      }
+      loadCadastro();
+    }
+  },[id]);
+
+  const [erro, setErro] = useState("");
+  const [mostrarError, setMostrarError] = useState("invisible");
+
+  function validaFormulario(e) {
+    e.preventDefault();
+
+    if (cadastro.nome == null || cadastro.nome.length <= 0) {
+      setErro("* O nome não pode ficar vazio");
+      setMostrarError("visible");
+      return;
+    }
+
+    if (cadastro.cpf == null || cadastro.cpf.length <= 0) {
+      setErro("* O CPF não pode ficar vazio");
+      setMostrarError("visible");
+      return;
+    }
+
+    adicionarCadastro(cadastro);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-      api.post("/api/cadastro", cadastro).then(() => {
+  function adicionarCadastro(xCadastro) {
+    if (id){
+      api.put(`/api/cadastro/${id}`, xCadastro).then(() => {
         history.push("/");
-      }); 
+      });
+    }else {
+      api.post("/api/cadastro", xCadastro).then(() => {
+        history.push("/");
+      });
+    }
+    
   }
 
   return (
     <div className="container">
       <h3>Incluir Cadastro</h3>
+
       <div className="dropdown-divider"></div>
 
-      <form onSubmit={handleSubmit}>
+      <Form onSubmit={validaFormulario}>
         <div className="row">
-          <div className="form-group col-md-10">
-            <label htmlFor="nome">Nome : </label>
-            <input
-              type="text"
-              className="form-control"
-              id="nome"
+          <Form.Group className="col-md-10">
+            <Form.Label>Nome : </Form.Label>
+            <Form.Control
+              type="name"
               placeholder="Enter nome"
               name="nome"
-              onChange={handleChange}
+              onChange={(e) =>
+                setCadastro({ ...cadastro, nome: e.target.value })
+              }
+              value={cadastro.nome}
             />
-          </div>
-          <div className="form-group col-md-2">
-            <label htmlFor="Idade">Idade : </label>
-            <input
-              type="text"
-              className="form-control"
-              id="Idade"
+          </Form.Group>
+          <Form.Group className="col-md-2">
+            <Form.Label>Idade : </Form.Label>
+            <Form.Control
+              type="idade"
               placeholder="Idade"
-              name="idade"
-              onChange={handleChange}
+              onChange={(e) =>
+                setCadastro({ ...cadastro, idade: e.target.value })
+              }
+              value={cadastro.idade}
             />
-          </div>
+          </Form.Group>
         </div>
         <br />
         <div className="row">
-          <div className="form-group col-md-6">
-            <label htmlFor="estado_civil">Estado Civil : </label>
-            <input
-              type="text"
-              className="form-control"
-              id="estado_civil"
+          <Form.Group className="col-md-6">
+            <Form.Label>Estado Civil : </Form.Label>
+            <Form.Control
+              type="estado_civil"
               placeholder="Enter Estado Civil"
-              name="estado_civil"
-              onChange={handleChange}
+              onChange={(e) =>
+                setCadastro({ ...cadastro, estado_civil: e.target.value })
+              }
+              value={cadastro.estado_civil}
             />
-          </div>
-          <div className="form-group col-md-3">
-            <label htmlFor="cpf">CPF : </label>
-            <input
-              type="text"
-              className="form-control"
-              id="cpf"
-              placeholder="Entre CPF"
-              name="cpf"
-              onChange={handleChange}
+          </Form.Group>
+          <Form.Group className="col-md-3">
+            <Form.Label>CPF : </Form.Label>
+            <Form.Control
+              type="cpf"
+              placeholder="Enter CPF"
+              onChange={(e) =>
+                setCadastro({ ...cadastro, cpf: e.target.value })
+              }
+              value={cadastro.cpf}
             />
-          </div>
+          </Form.Group>
         </div>
         <br />
         <div className="row">
-          <div className="form-group col-md-6">
-            <label htmlFor="cidade">Cidade : </label>
-            <input
-              type="text"
-              className="form-control"
-              id="cidade"
-              placeholder="Entre Cidade"
-              name="cidade"
-              onChange={handleChange}
+          <Form.Group className="col-md-6">
+            <Form.Label>Cidade : </Form.Label>
+            <Form.Control
+              type="cidade"
+              placeholder="Enter nome"
+              onChange={(e) =>
+                setCadastro({ ...cadastro, cidade: e.target.value })
+              }
+              value={cadastro.cidade}
             />
-          </div>
-          <div className="form-group col-4">
-            <label htmlFor="estado">Selecione Estado : </label>
-            <select
-              className="form-control"
-              id="estado"
-              name="estado"
-              onChange={handleChange}
+          </Form.Group>
+          <Form.Group className="col-4">
+            <Form.Label>Selecione Estado :</Form.Label>
+            <Form.Control
+              as="select"
+              type="estado"
+              onChange={(e) =>
+                setCadastro({ ...cadastro, estado: e.target.value })
+              }
+              value={cadastro.estado}
             >
               <option value="">Selecione ....</option>
               <option value="AC">Acre</option>
@@ -129,19 +165,23 @@ function Forms() {
               <option value="SP">São Paulo</option>
               <option value="SE">Sergipe</option>
               <option value="TO">Tocantins</option>
-            </select>
-          </div>
+            </Form.Control>
+          </Form.Group>
         </div>
         <br />
+        <div className={`alert alert-danger ${mostrarError}`}>{erro}</div>
         <div className="btButton">
-          <button type="submit" className="btn btn-primary">
+          <Button type="submit" variant="primary">
             Salvar
-          </button>
-          <Button variant="danger" href="/">
-            Cancelar
+          </Button>
+          <Button variant="danger" onClick={(e) => history.push("/")}>
+            Voltar
+          </Button>
+          <Button variant="warning" type="reset">
+            Limpa Formulario
           </Button>
         </div>
-      </form>
+      </Form>
     </div>
   );
 }
