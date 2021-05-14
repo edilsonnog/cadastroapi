@@ -22,7 +22,7 @@ function Forms() {
       }
       loadCadastro();
     }
-  },[id]);
+  }, [id]);
 
   const [erro, setErro] = useState("");
   const [mostrarError, setMostrarError] = useState("invisible");
@@ -45,19 +45,26 @@ function Forms() {
     adicionarCadastro(cadastro);
   }
 
+  function handleChange(e) {
+    setCadastro({
+      ...cadastro,
+      [e.target.name]: e.target.value,
+    });
+  }
+
   function adicionarCadastro(xCadastro) {
-    if (id){
+    if (id) {
       api.put(`/api/cadastro/${id}`, xCadastro).then(() => {
         toast.success('Cadastro alterado com sucesso!')
         history.push("/");
       });
-    }else {
+    } else {
       api.post("/api/cadastro", xCadastro).then(() => {
         toast.success('Cadastro salvo com sucesso!')
         history.push("/");
       });
     }
-    
+
   }
 
   return (
@@ -74,9 +81,7 @@ function Forms() {
               type="name"
               placeholder="Enter nome"
               name="nome"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, nome: e.target.value })
-              }
+              onChange={handleChange}
               value={cadastro.nome}
             />
           </Form.Group>
@@ -85,9 +90,8 @@ function Forms() {
             <Form.Control
               type="idade"
               placeholder="Idade"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, idade: e.target.value })
-              }
+              name="idade"
+              onChange={handleChange}
               value={cadastro.idade}
             />
           </Form.Group>
@@ -99,9 +103,8 @@ function Forms() {
             <Form.Control
               type="estado_civil"
               placeholder="Enter Estado Civil"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, estado_civil: e.target.value })
-              }
+              name="estado_civil"
+              onChange={handleChange}
               value={cadastro.estado_civil}
             />
           </Form.Group>
@@ -110,9 +113,8 @@ function Forms() {
             <Form.Control
               type="cpf"
               placeholder="Enter CPF"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, cpf: e.target.value })
-              }
+              name="cpf"
+              onChange={handleChange}
               value={cadastro.cpf}
             />
           </Form.Group>
@@ -124,9 +126,8 @@ function Forms() {
             <Form.Control
               type="cidade"
               placeholder="Enter nome"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, cidade: e.target.value })
-              }
+              name="cidade"
+              onChange={handleChange}
               value={cadastro.cidade}
             />
           </Form.Group>
@@ -135,9 +136,8 @@ function Forms() {
             <Form.Control
               as="select"
               type="estado"
-              onChange={(e) =>
-                setCadastro({ ...cadastro, estado: e.target.value })
-              }
+              name="estado"
+              onChange={handleChange}
               value={cadastro.estado}
             >
               <option value="">Selecione ....</option>
